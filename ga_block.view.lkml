@@ -291,6 +291,7 @@ view: totals_base {
     type: sum
     sql: ${TABLE}.timeonsite ;;
   }
+
   dimension: timeonsite_tier {
     label: "Time On Site Tier"
     type: tier

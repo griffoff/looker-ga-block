@@ -15,7 +15,7 @@ view: ga_sessions {
 
 
   sql_table_name: {% assign plat = ga_sessions.platform_selector._sql %}
-                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.115907067.ga_sessions_*`
+                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_sessions_*`
                   {% elsif plat contains 'Aplia' %} `titanium-kiln-120918.130709608.ga_sessions_*`
                   {% elsif plat contains 'SAM' %} `titanium-kiln-120918.116188121.ga_sessions_*`
                   {% elsif plat contains 'MindTap Mobile' %} `titanium-kiln-120918.92812344.ga_sessions_*`
@@ -36,15 +36,6 @@ view: ga_sessions {
     sql: {% parameter platform_picker %} ;;
   }
 
-
-
-  # If you have custom dimensions on sessions, declare them here.
-
-  # dimension: custom_dimension_2 {
-  #   sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=2) ;;
-  # }
-
-
   # dimension: custom_dimension_2 {
   #   sql: (SELECT value FROM UNNEST(${TABLE}.customdimensions) WHERE index=2) ;;
   # }
@@ -60,6 +51,16 @@ view: geoNetwork {
 
 view: totals {
   extends: [totals_base]
+
+  measure: timeonsite_total {hidden: yes}
+
+  measure: timeonsite_total_days {
+    label: "Time On Site"
+    type: sum
+    sql: ${TABLE}.timeonsite / 60 / 60 / 24 ;;
+    value_format: "hh:mm:ss"
+
+  }
 }
 
 view: trafficSource {
@@ -132,9 +133,77 @@ view: hits_eventInfo {
   }
 }
 
-
 view: hits_customDimensions {
   extends: [hits_customDimensions_base]
+
+  dimension: id {
+    sql: ${hits.id} ;;
+    primary_key: yes
+    hidden: yes
+  }
+
+  dimension: eventCategory {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.eventCategory') ;;
+  }
+
+  dimension: eventAction {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.eventAction') ;;
+  }
+
+  dimension: event {
+    sql: CONCAT(COALESCE(CONCAT(NULLIF(${eventAction}, ${eventCategory}), ' '), ''), ${eventCategory})  ;;
+  }
+
+  dimension: eventLabel {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.eventLabel') ;;
+  }
+
+  dimension: userRole {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.userRole') ;;
+  }
+
+  dimension: coreTextISBN {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.coreTextISBN') ;;
+  }
+
+  dimension: localTime {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.localTime') ;;
+  }
+
+  dimension: readingPageView {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.readingPageView') ;;
+  }
+
+  dimension: readingPageCount {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.readingPageCount') ;;
+  }
+
+  dimension: userSSOGuid {
+    type: string
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.userSSOGuid') ;;
+    hidden: yes
+  }
+
+  dimension: eventValue {
+    type: number
+    sql: SAFE_CAST(JSON_EXTRACT_SCALAR(${value}, '$.eventValue') AS INT64) ;;
+  }
+
+  measure: eventValue_total {
+    type: sum
+    sql: ${eventValue} ;;
+  }
+
+  measure: user_count {
+    type: count_distinct
+    sql: ${userSSOGuid} ;;
+  }
+
+  measure: eventValue_average {
+    type: average
+    sql: ${eventValue} ;;
+  }
+
 }
 
 view: hits_customVariables {
