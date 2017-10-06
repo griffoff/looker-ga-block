@@ -22,12 +22,12 @@ view: ga_sessions {
                   {% elsif plat contains 'CNow V7' %} `titanium-kiln-120918.116197107.ga_sessions_*`
                   {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.121361627.ga_sessions_*`
                   {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
-
+                  {% elsif plat contains 'Math Foundations' %} `titanium-kiln-120918.130478431.ga_sessions_*`
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap","Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp"]
+    suggestions: ["MindTap","Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations"]
   }
 
   dimension: platform_selector {
@@ -142,6 +142,10 @@ view: hits_customDimensions {
     hidden: yes
   }
 
+  dimension: index {
+    sql: safe_cast(hits_customDimensions.index as string) ;;
+  }
+
   dimension: eventCategory {
     sql: JSON_EXTRACT_SCALAR(${value}, '$.eventCategory') ;;
   }
@@ -182,6 +186,11 @@ view: hits_customDimensions {
     type: string
     sql: JSON_EXTRACT_SCALAR(${value}, '$.userSSOGuid') ;;
     hidden: yes
+  }
+
+  dimension: courseKey {
+    type: string
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.courseKey') ;;
   }
 
   dimension: eventValue {
