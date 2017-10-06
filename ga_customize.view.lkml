@@ -22,12 +22,13 @@ view: ga_sessions {
                   {% elsif plat contains 'CNow V7' %} `titanium-kiln-120918.116197107.ga_sessions_*`
                   {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.121361627.ga_sessions_*`
                   {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
+                  {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_sessions_*`
 
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap","Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp"]
+    suggestions: ["MindTap","Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp","GA Reference Property"]
   }
 
   dimension: platform_selector {
