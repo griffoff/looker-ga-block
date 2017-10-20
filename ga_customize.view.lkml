@@ -1,5 +1,13 @@
 include: "ga_block.view.lkml"
 
+named_value_format: duration_hms {
+  value_format: "hh:mm:ss"
+}
+
+named_value_format: duration_hms_full {
+  value_format: "h \h\r\s m \m\i\n\s s \s\e\c\s"
+}
+
 explore: ga_sessions_block {
   extends: [ga_sessions_base]
   extension: required
@@ -8,6 +16,11 @@ explore: ga_sessions_block {
 
 view: ga_sessions {
   extends: [ga_sessions_base]
+
+  dimension: partition_date {
+    type: date_time
+    sql: TIMESTAMP(PARSE_DATE('%Y%m%d', CONCAT('2', REGEXP_EXTRACT(_TABLE_SUFFIX,r'\d{7}$'))))  ;;
+  }
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly.
 
 #   sql_table_name: `115907067.ga_sessions_*` ;;
@@ -23,7 +36,7 @@ view: ga_sessions {
                   {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.121361627.ga_sessions_*`
                   {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
                   {% elsif plat contains 'Math Foundations' %} `titanium-kiln-120918.130478431.ga_sessions_*`
-                  {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_sessions_*`
+                  {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_2*`
                   {% endif %}
                   ;;
 
@@ -53,14 +66,28 @@ view: geoNetwork {
 view: totals {
   extends: [totals_base]
 
-  measure: timeonsite_total {hidden: yes}
+  #measure: timeonsite_total {hidden: yes}
 
-  measure: timeonsite_total_days {
+  measure: timeonsite_total {
     label: "Time On Site"
     type: sum
     sql: ${TABLE}.timeonsite / 60 / 60 / 24 ;;
     value_format: "hh:mm:ss"
+  }
 
+  dimension: timeonsite_tier {
+    label: "Time On Site Tier"
+    type: tier
+    sql: ${TABLE}.timeonsite ;;
+    tiers: [0,15,30,60,90,120,180,240,300,600]
+    style: relational
+    value_format_name: duration_hms_full
+  }
+  measure: timeonsite_average_per_session {
+    label: "Time On Site Average Per Session"
+    type: number
+    sql: 1.0 * ${timeonsite_total} / NULLIF(${ga_sessions.session_count},0) ;;
+    value_format_name: duration_hms_full
   }
 }
 
