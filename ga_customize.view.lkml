@@ -24,8 +24,7 @@ view: ga_sessions {
   # The SQL_TABLE_NAME must be replaced here for date partitioned queries to work properly.
 
 #   sql_table_name: `115907067.ga_sessions_*` ;;
-
-
+# {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_realtime_sessions_2*`
 
   sql_table_name: {% assign plat = ga_sessions.platform_selector._sql %}
                   {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_sessions_*`
@@ -36,12 +35,13 @@ view: ga_sessions {
                   {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.121361627.ga_sessions_*`
                   {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
                   {% elsif plat contains 'Math Foundations' %} `titanium-kiln-120918.130478431.ga_sessions_*`
-                  {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_2*`
+                  {% elsif plat contains 'CU Dashboard - Non Prod' %} `nth-station-121323.175946426.ga_sessions_*`
+                  {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_view_*`
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap","Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations", "GA Reference Property"]
+    suggestions: ["MindTap", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations", "GA Reference Property"]
   }
 
   dimension: platform_selector {
@@ -200,6 +200,10 @@ view: hits_customDimensions {
 
   dimension: localTime {
     sql: JSON_EXTRACT_SCALAR(${value}, '$.localTime') ;;
+  }
+
+  dimension: userssoguid {
+    sql: JSON_EXTRACT_SCALAR(${value}, '$.userSSOGuid') ;;
   }
 
   dimension: readingPageView {

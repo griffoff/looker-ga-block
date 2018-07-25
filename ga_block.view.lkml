@@ -442,6 +442,11 @@ view: hits_base {
   dimension_group: hit {
     type: time
     #sql: TIMESTAMP_SECONDS(${ga_sessions.visitStartSeconds} + TIMESTAMP(${TABLE}.time)) ;;
+    sql: SAFE_CAST(DATETIME(TIMESTAMP_SECONDS(SAFE_CAST(${ga_sessions.visitStartTime}+${TABLE}.time/1000 AS INT64)), "America/New_York") AS TIMESTAMP) ;;
+  }
+  dimension_group: hit_raw {
+    type: time
+    #sql: TIMESTAMP_SECONDS(${ga_sessions.visitStartSeconds} + TIMESTAMP(${TABLE}.time)) ;;
     sql: TIMESTAMP_SECONDS(SAFE_CAST(${ga_sessions.visitStartTime}+${TABLE}.time/1000 AS INT64)) ;;
   }
   dimension: hour {}
