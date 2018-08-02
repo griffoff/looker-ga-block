@@ -485,7 +485,7 @@ view: hits_base {
 
 
   set: detail {
-    fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits_page.pagePath, hits.pageTitle]
+    fields: [ga_sessions.id, ga_sessions.visitnumber, ga_sessions.session_count, hits.hit_raw, hits_page.pagePath, hits.pageTitle]
   }
 }
 
@@ -669,9 +669,8 @@ view: hits_eCommerceAction_base {
 view: hits_eventInfo_base {
   extension: required
   dimension: eventCategory {label: "Event Category"}
-
   dimension: eventAction {label: "Event Action"}
   dimension: eventLabel {label: "Event Label"}
-  dimension: eventValue {label: "Event Category"}
+  dimension: eventValue {label: "Event Value"}
 
 }

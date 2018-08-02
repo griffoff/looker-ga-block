@@ -36,12 +36,13 @@ view: ga_sessions {
                   {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
                   {% elsif plat contains 'Math Foundations' %} `titanium-kiln-120918.130478431.ga_sessions_*`
                   {% elsif plat contains 'CU Dashboard - Non Prod' %} `nth-station-121323.175946426.ga_sessions_*`
+                  {% elsif plat contains 'CU Dashboard' %} `titanium-kiln-120918.120306540.ga_sessions_*`
                   {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_view_*`
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations", "GA Reference Property"]
+    suggestions: ["MindTap", "CU Dashboard", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations", "GA Reference Property"]
   }
 
   dimension: platform_selector {
@@ -101,10 +102,20 @@ view: device {
 
 view: hits {
   extends: [hits_base]
+
+  measure: latest_hit {
+    type: date_time
+    sql: max(${hit_raw}) ;;
+  }
 }
 
 view: hits_page {
   extends: [hits_page_base]
+
+  measure: pagePath_example {
+    type: string
+    sql: ANY_VALUE(${pagePath}) ;;
+  }
 }
 
 # -- Ecommerce Fields
@@ -159,6 +170,55 @@ view: hits_eventInfo {
     sql: ${eventAction} = "play" ;;
     type: yesno
   }
+  measure: eventAction_example {
+    label: "Event Action (example value)"
+    sql: any_value(${eventAction});;
+  }
+  measure: eventAction_unique {
+    type: number
+    label: "Event Action (unique values)"
+    sql: count(distinct ${eventAction});;
+  }
+  measure: eventAction_null {
+    type: number
+    label: "Event Action (blank or null values)"
+    sql: count(case when ${eventAction} is null or ${eventAction} = '' then 1 end )
+      / count(*) ;;
+    value_format_name: percent_1
+  }
+  measure: eventLabel_example {
+    label: "Event Label (example value)"
+    sql: any_value(${eventLabel});;
+  }
+  measure: eventLabel_unique {
+    type: number
+    label: "Event Label (unique values)"
+    sql: count(distinct ${eventLabel});;
+  }
+  measure: eventLabel_null {
+    type: number
+    label: "Event Label (blank or null values)"
+    sql: count(case when ${eventLabel} is null or ${eventLabel} = '' then 1 end )
+      / count(*) ;;
+    value_format_name: percent_1
+  }
+  measure: eventValue_example {
+    label: "Event Value (example value)"
+    sql: any_value(${eventValue});;
+  }
+  measure: eventValue_unique {
+    type: number
+    label: "Event Value (unique values)"
+    sql: count(distinct ${eventValue});;
+  }
+  measure: eventValue_null {
+    type: number
+    label: "Event Value (blank or null values)"
+    sql: count(case when ${eventValue} is null or SAFE_CAST(${eventValue} AS STRING) = '' then 1 end )
+      / count(*) ;;
+    value_format_name: percent_1
+  }
+
 }
 
 view: hits_customDimensions {
