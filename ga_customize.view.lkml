@@ -223,6 +223,11 @@ view: hits_eventInfo {
     sql: case when ${eventAction} = 'Search Term | First Result | ISBN' then SPLIT(${eventLabel}, '|')[OFFSET(0)] end ;;
   }
 
+  dimension: search_term_cat {
+    type: string
+    sql: case when ${search_term} like '9____________' then 'Specific ISBN' else ${search_term} end   ;;
+  }
+
 }
 
 view: hits_customDimensions {
