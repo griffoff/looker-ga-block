@@ -218,6 +218,10 @@ view: hits_eventInfo {
       / count(*) ;;
     value_format_name: percent_1
   }
+  dimension: search_term {
+    type: string
+    sql: case when ${eventAction} = 'Search Term | First Result | ISBN' then SPLIT(${eventLabel}, '|')[OFFSET(0)] end ;;
+  }
 
 }
 
