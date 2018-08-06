@@ -38,11 +38,12 @@ view: ga_sessions {
                   {% elsif plat contains 'CU Dashboard - Non Prod' %} `nth-station-121323.175946426.ga_sessions_*`
                   {% elsif plat contains 'CU Dashboard' %} `titanium-kiln-120918.120306540.ga_sessions_*`
                   {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_view_*`
+                  {% elsif plat contains 'OLD MT dataset' %} `titanium-kiln-120918.115907067.ga_sessions_*`
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap", "CU Dashboard", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations", "GA Reference Property"]
+    suggestions: ["MindTap", "CU Dashboard", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations","OLD MT dataset", "GA Reference Property"]
   }
 
   dimension: platform_selector {
