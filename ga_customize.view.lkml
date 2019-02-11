@@ -28,7 +28,7 @@ view: ga_sessions {
 
   sql_table_name: {% assign plat = ga_sessions.platform_selector._sql %}
                   {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_sessions_*`
-                  {% elsif plat contains 'Aplia' %} `titanium-kiln-120918.130709608.ga_sessions_*`
+                  {% elsif plat contains 'Aplia' %} `titanium-kiln-120918.116189617.ga_sessions_*`
                   {% elsif plat contains 'SAM' %} `titanium-kiln-120918.116188121.ga_sessions_*`
                   {% elsif plat contains 'MindTap Mobile' %} `titanium-kiln-120918.92812344.ga_sessions_*`
                   {% elsif plat contains 'CNow V7' %} `titanium-kiln-120918.116197107.ga_sessions_*`
@@ -226,7 +226,10 @@ view: hits_eventInfo {
 
   dimension: search_term_cat {
     type: string
-    sql: case when ${search_term} like '9____________' then 'Specific ISBN' else ${search_term} end   ;;
+    sql: case
+          when ${search_term} like '9____________' then 'Specific ISBN'
+          when ${search_term} like '1-__-_____-_' then 'Specific ISBN 2'
+          else ${search_term} end   ;;
   }
 
 }
