@@ -27,23 +27,42 @@ view: ga_sessions {
 # {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_realtime_sessions_2*`
 
   sql_table_name: {% assign plat = ga_sessions.platform_selector._sql %}
-                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_sessions_*`
+                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.115907067.ga_sessions_*`
                   {% elsif plat contains 'Aplia' %} `titanium-kiln-120918.116189617.ga_sessions_*`
-                  {% elsif plat contains 'SAM' %} `titanium-kiln-120918.116188121.ga_sessions_*`
+                  {% elsif plat contains 'SAM' %} `titanium-kiln-120918.117564478.ga_sessions_*`
                   {% elsif plat contains 'MindTap Mobile' %} `titanium-kiln-120918.92812344.ga_sessions_*`
-                  {% elsif plat contains 'CNow V7' %} `titanium-kiln-120918.116197107.ga_sessions_*`
-                  {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.121361627.ga_sessions_*`
-                  {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.121398401.ga_sessions_*`
+                  {% elsif plat contains 'CNow V7' %} `titanium-kiln-120918.121361627.ga_sessions_*`
+                  {% elsif plat contains 'CNow V8' %} `titanium-kiln-120918.116197107.ga_sessions_*`
+                  {% elsif plat contains 'CNow MindApp' %} `titanium-kiln-120918.59849884.ga_sessions_*`
                   {% elsif plat contains 'Math Foundations' %} `titanium-kiln-120918.130478431.ga_sessions_*`
                   {% elsif plat contains 'CU Dashboard - Non Prod' %} `nth-station-121323.175946426.ga_sessions_*`
+                  {% elsif plat contains 'WebAssign' %} `nth-station-121323.109606989.ga_sessions_*`
                   {% elsif plat contains 'CU Dashboard' %} `titanium-kiln-120918.120306540.ga_sessions_*`
                   {% elsif plat contains 'GA Reference Property'%} `nth-station-121323.154104704.ga_realtime_sessions_view_*`
                   {% elsif plat contains 'Realtime Dashboard' %} `titanium-kiln-120918.120306540.ga_realtime_sessions_*`
+                  {% elsif plat contains 'Milady' %} `titanium-kiln-120918.116935769.ga_sessions_*`
+                  {% elsif plat contains 'Delmar' %} `titanium-kiln-120918.31584948.ga_sessions_*`
                   {% endif %}
                   ;;
 
   filter: platform_picker {
-    suggestions: ["MindTap", "CU Dashboard", "CU Dashboard - Non Prod", "Aplia", "SAM", "CNow V7", "CNow V8", "CNow MindApp", "Math Foundations","OLD MT dataset", "GA Reference Property","Realtime Dashboard"]
+    suggestions: [
+      "MindTap"
+      ,"CU Dashboard"
+      #,"CU Dashboard - Non Prod"
+      ,"Aplia"
+      ,"SAM"
+      ,"WebAssign"
+      ,"CNow V7 - broken awaiting PII confirmation"
+      ,"CNow V8 - broken awaiting PII confirmation"
+      ,"CNow MindApp - broken awaiting PII confirmation"
+      ,"Math Foundations"
+      ,"GA Reference Property"
+      ,"Realtime Dashboard"
+      ,"Milady - bigquery linked but not working"
+      ,"Delmar"
+      ]
+
   }
 
   dimension: platform_selector {
