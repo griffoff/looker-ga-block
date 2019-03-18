@@ -27,7 +27,7 @@ view: ga_sessions {
 # {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_realtime_sessions_2*`
 
   sql_table_name: {% assign plat = ga_sessions.platform_selector._sql %}
-                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.115907067.ga_sessions_*`
+                  {% if plat contains 'MindTap' %} `titanium-kiln-120918.157271542.ga_sessions_*`
                   {% elsif plat contains 'Aplia' %} `titanium-kiln-120918.116189617.ga_sessions_*`
                   {% elsif plat contains 'SAM' %} `titanium-kiln-120918.117564478.ga_sessions_*`
                   {% elsif plat contains 'MindTap Mobile' %} `titanium-kiln-120918.92812344.ga_sessions_*`
